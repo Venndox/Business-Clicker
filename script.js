@@ -1,4 +1,84 @@
-let coins = 0;
+let money = 0;
+let eraIndex = 0;
+
+const eras = [
+  {
+    name: "Starter Era",
+    currency: "Coins",
+    clickValue: 5,
+    conversion: null
+  },
+  {
+    name: "Residential Era",
+    currency: "Points",
+    clickValue: 5,
+    conversion: 100
+  },
+  {
+    name: "Automotive Era",
+    currency: "Credits",
+    clickValue: 5,
+    conversion: 250
+  },
+  {
+    name: "Imperial Era",
+    currency: "Tokens",
+    clickValue: 5,
+    conversion: 500
+  },
+  {
+    name: "Cosmic Era",
+    currency: "Dark Matter Coins",
+    clickValue: 5,
+    conversion: 1000
+  },
+  {
+    name: "Multiversal Era",
+    currency: "Dark Energy Coins",
+    clickValue: 5,
+    conversion: 2500
+  },
+  {
+    name: "Gadget Era",
+    currency: "Cold Dark Matter Coins",
+    clickValue: 5,
+    conversion: 10000
+  },
+  {
+    name: "Max Era",
+    currency: "Supercoins",
+    clickValue: 1,
+    conversion: 100000
+  }
+];
+
+const moneySpan = document.getElementById("money");
+const currencySpan = document.getElementById("currency");
+const eraNameSpan = document.getElementById("eraName");
+const nextEraBtn = document.getElementById("nextEraBtn");
+
+nextEraBtn.onclick = () => {
+  if (eraIndex >= eras.length - 1) {
+    alert("You are already in the Max Era! 🏁 ");
+    return;
+  }
+
+  const nextEra = eras[eraIndex + 1];
+
+  money = Math.floor(money / nextEra.conversion);
+  eraIndex++;
+
+  alert(
+    `🏆 NEW ERA UNLOCKED!\n\n` +
+    `Welcome to the ${eras[eraIndex].name}\n` +
+    `New currency: ${eras[eraIndex].currency}\n\n` +
+    `1 ${eras[eraIndex].currency} = ${nextEra.conversion} previous currency`
+  );
+
+  updateUI();
+  save();
+};
+
 const perClick = 5;
 
 const items = [
@@ -100,14 +180,23 @@ const coinsSpan = document.getElementById("coins");
 const shopDiv = document.getElementById("shop");
 
 document.getElementById("clickBtn").onclick = () => {
+  money += eras[eraIndex].clickValue;
+  updateUI();
+  save();
+};
+
   coins += perClick;
   updateUI();
   save();
 };
 
 function updateUI() {
-  coinsSpan.textContent = coins;
-  renderShop();
+  moneySpan.textContent = money;
+  currencySpan.textContent = eras[eraIndex].currency;
+  eraNameSpan.textContent = eras[eraIndex].name;
+
+  nextEraBtn.style.display =
+    eraIndex < eras.length - 1 ? "inline-block" : "none";
 }
 
 function renderShop() {
@@ -134,13 +223,26 @@ function renderShop() {
 }
 
 function save() {
-  localStorage.setItem("businessClicker", coins);
+  localStorage.setItem(
+    "businessClickerSave",
+    JSON.stringify({ money, eraIndex })
+  );
 }
 
 function load() {
-  const saved = localStorage.getItem("businessClicker");
-  if (saved) coins = parseInt(saved);
+  const data = JSON.parse(
+    localStorage.getItem("businessClickerSave")
+  );
+
+  if (data) {
+    money = data.money;
+    eraIndex = data.eraIndex;
+  }
+
   updateUI();
 }
+
+load();
+
 
 load();
