@@ -185,9 +185,26 @@ document.getElementById("clickBtn").onclick = () => {
   save();
 };
 
-  coins += perClick;
-  updateUI();
-  save();
+ money += eras[eraIndex].clickValue;  // teraz każda era ma swoją wartość kliknięcia
+updateUI();
+save();
+
+era.items.forEach(item => {
+  const btn = document.createElement("button");
+  btn.textContent = `${item.name} (${item.cost} ${era.currency})`;
+
+  btn.onclick = () => {
+    if (money >= item.cost) {
+      money -= item.cost;
+      alert(`🛒 Purchased: ${item.name}`);
+      updateUI();
+      save();
+    } else {
+      alert("❌ Not enough currency!");
+    }
+  };
+
+  shopDiv.appendChild(btn);
 };
 
 function updateUI() {
