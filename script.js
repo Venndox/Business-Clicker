@@ -208,9 +208,10 @@ era.items.forEach(item => {
 };
 
 function updateUI() {
-  moneySpan.textContent = money;
-  currencySpan.textContent = eras[eraIndex].currency;
-  eraNameSpan.textContent = eras[eraIndex].name;
+moneySpan.textContent = money;
+currencySpan.textContent = era.currency;
+eraNameSpan.textContent = era.name;
+
 
   nextEraBtn.style.display =
     eraIndex < eras.length - 1 ? "inline-block" : "none";
