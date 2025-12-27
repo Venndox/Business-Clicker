@@ -118,7 +118,7 @@ function renderShop() {
     div.className = "shop-item";
 
     const btn = document.createElement("button");
-    btn.textContent = `Kup ${item.name} – ${item.cost} coins`;
+    btn.textContent = `Buy ${item.name} – ${item.cost} coins`;
     btn.disabled = coins < item.cost;
 
     btn.onclick = () => {
